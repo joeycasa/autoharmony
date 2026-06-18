@@ -1,224 +1,392 @@
 /* =============================================
-   AutoAI Sales — main.js
+   Autoharmony — main.js
    ============================================= */
 
-/* ---- Chat Demo ---- */
-const CONVERSATION = [
-  { side: 'customer', sender: 'Visitor',  text: 'Hi, I'm interested in the 2024 F-150 XLT — what's the best price you can do?' },
-  { side: 'ai',       sender: 'AutoAI',   text: 'Great choice! I'd love to help you get into that F-150. To give you an accurate number, do you have a trade-in, and are you looking to finance or pay cash?' },
-  { side: 'customer', sender: 'Visitor',  text: 'I have a 2019 Explorer and I'd probably finance.' },
-  { side: 'ai',       sender: 'AutoAI',   text: 'Perfect — I'm pulling together a deal summary with trade-in estimate and financing options now. One of our sales managers will review and send you a firm offer shortly. What's the best email to reach you?' },
-];
+/* =============================================
+   CANVAS PARTICLE BACKGROUND
+   ============================================= */
+(function initCanvas() {
+  const canvas = document.getElementById('bgCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
 
-const DELAYS    = [600, 2200, 4800, 7200];   // when each message appears
-const AI_TYPING = [1400, 3800, 6200];         // typing indicator for AI replies
+  let W, H, particles, connections, animId;
+  const PARTICLE_COUNT = 80;
+  const MAX_DIST = 140;
+  const PRIMARY_COLOR = '79,106,240';
 
-let chatContainer;
-let resetTimer;
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
 
-function buildChatUI() {
-  chatContainer = document.getElementById('chatMessages');
-  if (!chatContainer) return;
-  renderChat();
-}
+  function createParticles() {
+    particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x:  Math.random() * W,
+      y:  Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r:  Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.5 + 0.2
+    }));
+  }
 
-function renderChat() {
-  chatContainer.innerHTML = '';
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
 
-  // Schedule typing indicators + messages
-  CONVERSATION.forEach((msg, i) => {
-    const delay = DELAYS[i];
-
-    if (msg.side === 'ai') {
-      const typingDelay = AI_TYPING[Math.floor(i / 2)];
-      setTimeout(() => showTyping(), typingDelay);
+    // Move particles
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H;
+      if (p.y > H) p.y = 0;
     }
 
-    setTimeout(() => {
-      removeTyping();
-      showMessage(msg);
-
-      // After last message, restart loop
-      if (i === CONVERSATION.length - 1) {
-        resetTimer = setTimeout(() => {
-          chatContainer.innerHTML = '';
-          renderChat();
-        }, 5000);
+    // Draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MAX_DIST) {
+          const alpha = (1 - dist / MAX_DIST) * 0.18;
+          ctx.strokeStyle = `rgba(${PRIMARY_COLOR},${alpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
       }
-    }, delay);
-  });
-}
-
-function showMessage(msg) {
-  const wrapper = document.createElement('div');
-  wrapper.className = `chat-msg from-${msg.side === 'customer' ? 'customer' : 'ai'}`;
-
-  const sender = document.createElement('div');
-  sender.className = 'msg-sender';
-  sender.textContent = msg.sender;
-
-  const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble';
-  bubble.textContent = msg.text;
-
-  wrapper.appendChild(sender);
-  wrapper.appendChild(bubble);
-  chatContainer.appendChild(wrapper);
-
-  // Scroll to latest
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-
-  // Trigger animation
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => wrapper.classList.add('visible'));
-  });
-}
-
-function showTyping() {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'chat-msg from-ai';
-  wrapper.id = 'typingIndicator';
-
-  const sender = document.createElement('div');
-  sender.className = 'msg-sender';
-  sender.textContent = 'AutoAI';
-
-  const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble msg-typing';
-  bubble.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-
-  wrapper.appendChild(sender);
-  wrapper.appendChild(bubble);
-  chatContainer.appendChild(wrapper);
-
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => wrapper.classList.add('visible'));
-  });
-}
-
-function removeTyping() {
-  const el = document.getElementById('typingIndicator');
-  if (el) el.remove();
-}
-
-
-/* ---- Process Timeline Animation ---- */
-function initProcessAnimation() {
-  const fill  = document.getElementById('processLineFill');
-  const steps = document.querySelectorAll('.pstep');
-  if (!fill || !steps.length) return;
-
-  let done = false;
-
-  const observer = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !done) {
-      done = true;
-      animateSteps(fill, steps);
     }
-  }, { threshold: 0.3 });
 
-  observer.observe(document.querySelector('.process-track'));
-}
+    // Draw particles
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${PRIMARY_COLOR},${p.alpha})`;
+      ctx.fill();
+    }
 
-function animateSteps(fill, steps) {
-  steps.forEach((step, i) => {
-    setTimeout(() => {
-      step.classList.add('visible', 'active');
+    animId = requestAnimationFrame(tick);
+  }
 
-      // Update line fill
-      const pct = ((i + 1) / steps.length) * 100;
-      fill.style.width = pct + '%';
+  resize();
+  createParticles();
+  tick();
 
-      // Remove active from all except current
-      steps.forEach((s, j) => {
-        if (j < i) s.classList.remove('active');
-      });
-    }, i * 400);
-  });
-}
-
-
-/* ---- Generic Scroll Fade-up ---- */
-function initFadeUps() {
-  const targets = document.querySelectorAll(
-    '.problem-card, .outcome-card, .comp-card, .pstep, .risk-banner, .cta-left, .form-card'
-  );
-
-  targets.forEach(el => el.classList.add('fade-up'));
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  targets.forEach(el => observer.observe(el));
-}
-
-
-/* ---- Nav scroll state ---- */
-function initNavScroll() {
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.style.background = window.scrollY > 20
-      ? 'rgba(9,9,15,.95)'
-      : 'rgba(9,9,15,.88)';
+  window.addEventListener('resize', () => {
+    resize();
+    createParticles();
   }, { passive: true });
-}
+})();
 
 
-/* ---- Form Submit ---- */
+/* =============================================
+   CHAT DEMO — fully self-contained, no globals
+   ============================================= */
+(function initChat() {
+
+  // Conversation script — straight ASCII quotes only, no smart quotes
+  const SCRIPT = [
+    {
+      side: 'customer',
+      text: 'Hi there — I saw a 2024 F-150 XLT on your site. What is the best price you can do?'
+    },
+    {
+      side: 'ai',
+      text: 'Great choice on the F-150! To put together an accurate number, quick question: do you have a trade-in, and are you looking to finance or pay cash?'
+    },
+    {
+      side: 'customer',
+      text: 'I have a 2020 Explorer, about 38k miles. And I would probably finance.'
+    },
+    {
+      side: 'ai',
+      text: 'Perfect — I am building your deal summary now with a trade-in estimate and financing options. A sales manager will review it and send you a firm offer shortly. What is the best email to reach you?'
+    }
+  ];
+
+  // Timings (ms): when each message is SHOWN
+  // Customer messages appear quickly; AI messages have a typing delay built in
+  const SHOW_AT = [700, 2600, 5000, 7600];
+
+  // Typing indicator appears this many ms BEFORE the AI message
+  const TYPING_LEAD = 900;
+
+  let container;
+  let pendingTimers = [];
+
+  function getContainer() {
+    return document.getElementById('chatMessages');
+  }
+
+  function scheduleAll() {
+    container = getContainer();
+    if (!container) return;
+
+    SCRIPT.forEach((msg, i) => {
+      const showAt = SHOW_AT[i];
+
+      if (msg.side === 'ai') {
+        // Show typing indicator TYPING_LEAD ms before the message
+        const typingAt = showAt - TYPING_LEAD;
+        const t1 = setTimeout(() => addTyping(), typingAt);
+        pendingTimers.push(t1);
+      }
+
+      const t2 = setTimeout(() => {
+        removeTyping();
+        addMessage(msg.side, msg.text);
+
+        // After last message, pause then restart
+        if (i === SCRIPT.length - 1) {
+          const t3 = setTimeout(() => {
+            clearChat();
+            scheduleAll();
+          }, 4500);
+          pendingTimers.push(t3);
+        }
+      }, showAt);
+
+      pendingTimers.push(t2);
+    });
+  }
+
+  function clearTimers() {
+    pendingTimers.forEach(clearTimeout);
+    pendingTimers = [];
+  }
+
+  function clearChat() {
+    clearTimers();
+    container = getContainer();
+    if (!container) return;
+    // Keep only the intro pill (first child)
+    while (container.children.length > 1) {
+      container.removeChild(container.lastChild);
+    }
+  }
+
+  function addMessage(side, text) {
+    container = getContainer();
+    if (!container) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'chat-msg from-' + side;
+
+    const sender = document.createElement('div');
+    sender.className = 'msg-sender';
+    sender.textContent = side === 'customer' ? 'Visitor' : 'Autoharmony';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.textContent = text;
+
+    wrapper.appendChild(sender);
+    wrapper.appendChild(bubble);
+    container.appendChild(wrapper);
+    container.scrollTop = container.scrollHeight;
+
+    // Two rAFs to ensure the element is painted before transitioning
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        wrapper.classList.add('visible');
+      });
+    });
+  }
+
+  function addTyping() {
+    container = getContainer();
+    if (!container) return;
+
+    // Don't add a second typing indicator
+    if (container.querySelector('#chatTyping')) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'chat-msg from-ai';
+    wrapper.id = 'chatTyping';
+
+    const sender = document.createElement('div');
+    sender.className = 'msg-sender';
+    sender.textContent = 'Autoharmony';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble msg-typing';
+    bubble.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+
+    wrapper.appendChild(sender);
+    wrapper.appendChild(bubble);
+    container.appendChild(wrapper);
+    container.scrollTop = container.scrollHeight;
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        wrapper.classList.add('visible');
+      });
+    });
+  }
+
+  function removeTyping() {
+    const el = document.getElementById('chatTyping');
+    if (el) el.remove();
+  }
+
+  // Start when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    scheduleAll();
+  });
+
+})();
+
+
+/* =============================================
+   PROCESS TIMELINE ANIMATION
+   ============================================= */
+(function initProcess() {
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('processTrack');
+    const fill  = document.getElementById('processLineFill');
+    const steps = document.querySelectorAll('.pstep');
+
+    if (!track || !fill || !steps.length) return;
+
+    let triggered = false;
+
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !triggered) {
+        triggered = true;
+        runSequence();
+      }
+    }, { threshold: 0.25 });
+
+    observer.observe(track);
+
+    function runSequence() {
+      steps.forEach((step, i) => {
+        const delay = i * 450;
+
+        // Make step visible
+        setTimeout(() => {
+          step.classList.add('visible');
+        }, delay);
+
+        // Activate dot with slight extra delay for line-then-dot feel
+        setTimeout(() => {
+          // Mark previous as done
+          if (i > 0) steps[i - 1].classList.replace('active', 'done');
+          step.classList.add('active');
+
+          // Advance the progress line
+          const pct = ((i + 1) / steps.length) * 100;
+          fill.style.width = pct + '%';
+        }, delay + 80);
+      });
+
+      // After all done, clean up last active
+      setTimeout(() => {
+        const lastActive = track.querySelector('.active');
+        if (lastActive) lastActive.classList.replace('active', 'done');
+      }, steps.length * 450 + 300);
+    }
+  });
+
+})();
+
+
+/* =============================================
+   SCROLL REVEAL
+   ============================================= */
+(function initReveal() {
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+    els.forEach(el => observer.observe(el));
+  });
+
+})();
+
+
+/* =============================================
+   NAV SCROLL STATE
+   ============================================= */
+(function initNav() {
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const nav = document.getElementById('nav');
+    if (!nav) return;
+
+    const onScroll = () => {
+      nav.classList.toggle('scrolled', window.scrollY > 30);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  });
+
+})();
+
+
+/* =============================================
+   FORM SUBMISSION
+   ============================================= */
 function handleSubmit() {
-  const name       = document.getElementById('name')?.value.trim();
-  const email      = document.getElementById('email')?.value.trim();
-  const dealership = document.getElementById('dealership')?.value.trim();
-  const btn        = document.getElementById('submitBtn');
+  const nameEl  = document.getElementById('fname');
+  const emailEl = document.getElementById('femail');
+  const dealEl  = document.getElementById('fdealership');
+  const btn     = document.getElementById('submitBtn');
 
-  if (!name || !email || !dealership) {
-    shakeField(!name ? 'name' : !email ? 'email' : 'dealership');
+  if (!nameEl || !emailEl || !dealEl || !btn) return;
+
+  const name  = nameEl.value.trim();
+  const email = emailEl.value.trim();
+  const deal  = dealEl.value.trim();
+
+  // Simple validation: highlight first empty field and bail
+  if (!name)  { highlightError(nameEl);  return; }
+  if (!email) { highlightError(emailEl); return; }
+  if (!deal)  { highlightError(dealEl);  return; }
+
+  // Basic email format check
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    highlightError(emailEl);
     return;
   }
 
-  btn.textContent  = '✓ Request Received';
+  // Success state
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8L6.5 12.5L14 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Request Received!';
   btn.style.background = '#22C55E';
-  btn.disabled     = true;
+  btn.style.boxShadow  = '0 8px 24px rgba(34,197,94,.35)';
 }
 
-function shakeField(id) {
-  const input = document.getElementById(id);
-  if (!input) return;
-
+function highlightError(input) {
   input.focus();
   input.style.borderColor = '#FF6B6B';
-  input.style.boxShadow   = '0 0 0 3px rgba(255,107,107,.2)';
+  input.style.boxShadow   = '0 0 0 3px rgba(255,107,107,.15)';
 
-  setTimeout(() => {
+  const reset = () => {
     input.style.borderColor = '';
     input.style.boxShadow   = '';
-  }, 1800);
+    input.removeEventListener('input', reset);
+  };
+
+  input.addEventListener('input', reset);
+
+  // Also auto-reset after 2.5s even if user doesn't type
+  setTimeout(reset, 2500);
 }
-
-
-/* ---- Respect reduced-motion preference ---- */
-function respectReducedMotion() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll('.fade-up').forEach(el => {
-      el.classList.add('in-view');
-    });
-  }
-}
-
-
-/* ---- Init ---- */
-document.addEventListener('DOMContentLoaded', () => {
-  buildChatUI();
-  initProcessAnimation();
-  initFadeUps();
-  initNavScroll();
-  respectReducedMotion();
-});
