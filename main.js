@@ -111,10 +111,10 @@
 
   // Timings (ms): when each message is SHOWN
   // Customer messages appear quickly; AI messages have a typing delay built in
-  const SHOW_AT = [700, 2600, 5000, 7600];
+  const SHOW_AT = [1500, 6500, 12000, 18000];
 
   // Typing indicator appears this many ms BEFORE the AI message
-  const TYPING_LEAD = 900;
+  const TYPING_LEAD = 2400;
 
   let container;
   let pendingTimers = [];
