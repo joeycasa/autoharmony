@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AutoAI Sales | AI That Helps Dealerships Sell More Cars</title>
+<title>Autoharmony | AI That Helps Dealerships Sell More Cars</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -11,12 +11,20 @@
 </head>
 <body>
 
+<!-- CANVAS BACKGROUND -->
+<canvas id="bgCanvas"></canvas>
+
 <!-- NAV -->
 <nav id="nav">
   <div class="container nav-inner">
     <div class="logo">
-      <span class="logo-mark">A</span>
-      AutoAI<span class="logo-dot">.</span>
+      <div class="logo-mark">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1L14 4.5V11.5L8 15L2 11.5V4.5L8 1Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="8" cy="8" r="2" fill="white"/>
+        </svg>
+      </div>
+      Autoharmony<span class="logo-dot">.</span>
     </div>
     <div class="nav-links">
       <a href="#problem">Problem</a>
@@ -33,14 +41,20 @@
   <div class="container hero-grid">
 
     <div class="hero-left">
-      <div class="eyebrow">AI-Powered Sales Platform</div>
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        AI-Powered Sales Platform
+      </div>
       <h1>Stop losing deals<br>to slow responses.</h1>
       <p class="hero-sub">
-        AutoAI engages every lead the moment they reach out — 24/7 —
+        Autoharmony engages every lead the moment they reach out — 24/7 —
         while your team keeps full control over every quote and deal.
       </p>
       <div class="hero-buttons">
-        <a href="#contact" class="btn btn-primary">Book a Demo</a>
+        <a href="#contact" class="btn btn-primary">
+          Book a Demo
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L7 1M13 7L7 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
         <a href="#solution" class="btn btn-ghost">See How It Works</a>
       </div>
       <div class="hero-stats">
@@ -62,19 +76,35 @@
     </div>
 
     <div class="hero-right">
-      <div class="chat-demo">
-        <div class="chat-header">
-          <div class="chat-status-dot"></div>
-          <span>AutoAI&nbsp;Agent</span>
-          <span class="chat-badge">Live</span>
-        </div>
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-footer">
-          <span>Powered by AutoAI Sales Platform</span>
+      <div class="chat-demo-wrapper">
+        <div class="chat-glow"></div>
+        <div class="chat-demo">
+          <div class="chat-header">
+            <div class="chat-avatar">AH</div>
+            <div class="chat-header-info">
+              <span class="chat-name">Autoharmony Agent</span>
+              <span class="chat-status"><span class="chat-status-dot"></span>Online now</span>
+            </div>
+            <span class="chat-badge">Live</span>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-intro-pill">Today, 10:42 AM</div>
+          </div>
+          <div class="chat-input-bar">
+            <div class="chat-input-fake">Type a message...</div>
+            <div class="chat-send-btn">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1L13 7L1 13V8.5L9 7L1 5.5V1Z" fill="currentColor"/></svg>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
+  </div>
+
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll to explore</span>
   </div>
 </section>
 
@@ -85,30 +115,37 @@
     <h2>What's happening in<br>dealerships right now</h2>
     <p class="section-sub">
       Every missed lead is a missed sale. Customers expect an instant response —
-      most dealerships simply can't deliver it around the clock.
+      most dealerships simply cannot deliver around the clock.
     </p>
 
     <div class="problem-grid">
-      <div class="problem-card">
-        <div class="problem-icon">⏱</div>
+      <div class="problem-card reveal">
+        <div class="problem-num">01</div>
         <h3>Leads Go Cold in Minutes</h3>
-        <p>Studies show response time is the single biggest factor in whether a lead converts. After 5 minutes, chances drop by over 80%.</p>
+        <p>Response time is the single biggest factor in whether a lead converts. After 5 minutes, chances drop by over 80%.</p>
+        <div class="card-shimmer"></div>
       </div>
-      <div class="problem-card">
-        <div class="problem-icon">😓</div>
+      <div class="problem-card reveal" style="--delay:.1s">
+        <div class="problem-num">02</div>
         <h3>Teams Are Stretched Thin</h3>
-        <p>Sales staff can't monitor every channel 24/7. Evenings, weekends, and holidays mean real customers get ignored.</p>
+        <p>Sales staff cannot monitor every channel 24/7. Evenings, weekends, and holidays mean real customers get ignored.</p>
+        <div class="card-shimmer"></div>
       </div>
-      <div class="problem-card">
-        <div class="problem-icon">⚠️</div>
+      <div class="problem-card reveal" style="--delay:.2s">
+        <div class="problem-num">03</div>
         <h3>Basic Automation Falls Short</h3>
-        <p>Most chatbots just collect a name and email. They can't qualify intent, answer vehicle questions, or move a deal forward.</p>
+        <p>Most chatbots just collect a name and email. They cannot qualify intent, answer vehicle questions, or move a deal forward.</p>
+        <div class="card-shimmer"></div>
       </div>
     </div>
 
-    <div class="risk-banner">
+    <div class="risk-banner reveal">
+      <div class="risk-pulse"></div>
       <div class="risk-inner">
-        <div class="risk-label">Hidden Risk</div>
+        <div class="risk-label">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L11 10H1L6 1Z" stroke="#FF6B6B" stroke-width="1.2" stroke-linejoin="round"/><line x1="6" y1="5" x2="6" y2="7.5" stroke="#FF6B6B" stroke-width="1.2" stroke-linecap="round"/><circle cx="6" cy="9" r=".6" fill="#FF6B6B"/></svg>
+          Hidden Risk
+        </div>
         <p class="risk-text">
           If AI quotes pricing automatically,
           <strong>your dealership owns that number.</strong>
@@ -126,29 +163,31 @@
     <div class="section-label">The Solution</div>
     <h2>AI that works with your team,<br>not around it.</h2>
     <p class="section-sub">
-      We don't replace your sales process — we accelerate it.
+      We do not replace your sales process — we accelerate it.
       The AI recommends. Your team approves. Every time.
     </p>
 
     <div class="comparison">
 
-      <div class="comp-card comp-bad">
+      <div class="comp-card comp-bad reveal">
         <div class="comp-header">
           <span class="comp-label comp-label-bad">Traditional AI Tools</span>
         </div>
         <ul class="comp-list">
-          <li><span class="x">✕</span> Auto-negotiate pricing with no oversight</li>
-          <li><span class="x">✕</span> Can create dealership liability</li>
+          <li><span class="x">✕</span> Auto-negotiates pricing with no oversight</li>
+          <li><span class="x">✕</span> Creates dealership liability</li>
           <li><span class="x">✕</span> Customers get inconsistent answers</li>
           <li><span class="x">✕</span> No visibility into what was promised</li>
         </ul>
       </div>
 
-      <div class="comp-vs">VS</div>
+      <div class="comp-vs reveal" style="--delay:.1s">
+        <div class="comp-vs-inner">VS</div>
+      </div>
 
-      <div class="comp-card comp-good">
+      <div class="comp-card comp-good reveal" style="--delay:.2s">
         <div class="comp-header">
-          <span class="comp-label comp-label-good">AutoAI Platform</span>
+          <span class="comp-label comp-label-good">Autoharmony Platform</span>
         </div>
         <ul class="comp-list">
           <li><span class="check">✓</span> Routes deal recommendations to your team</li>
@@ -169,7 +208,7 @@
     <div class="section-label">How It Works</div>
     <h2>Five steps from inquiry to offer</h2>
 
-    <div class="process-track">
+    <div class="process-track" id="processTrack">
 
       <div class="process-line">
         <div class="process-line-fill" id="processLineFill"></div>
@@ -178,23 +217,23 @@
       <div class="process-steps">
 
         <div class="pstep">
-          <div class="pstep-dot"><span>1</span></div>
+          <div class="pstep-dot"><span>1</span><div class="pstep-ring"></div></div>
           <div class="pstep-content">
             <h4>AI Responds Instantly</h4>
-            <p>Every inbound lead gets an immediate, personalized reply — day or night.</p>
+            <p>Every inbound lead gets a personalized reply in under a second — day or night.</p>
           </div>
         </div>
 
         <div class="pstep">
-          <div class="pstep-dot"><span>2</span></div>
+          <div class="pstep-dot"><span>2</span><div class="pstep-ring"></div></div>
           <div class="pstep-content">
             <h4>Qualifies the Buyer</h4>
-            <p>AutoAI asks the right questions to surface intent, budget, and timeline.</p>
+            <p>Autoharmony asks the right questions to surface intent, budget, and timeline.</p>
           </div>
         </div>
 
         <div class="pstep">
-          <div class="pstep-dot"><span>3</span></div>
+          <div class="pstep-dot"><span>3</span><div class="pstep-ring"></div></div>
           <div class="pstep-content">
             <h4>Prepares the Deal</h4>
             <p>A full deal summary — trade-in, financing, and vehicle — is assembled automatically.</p>
@@ -202,18 +241,18 @@
         </div>
 
         <div class="pstep">
-          <div class="pstep-dot"><span>4</span></div>
+          <div class="pstep-dot"><span>4</span><div class="pstep-ring"></div></div>
           <div class="pstep-content">
             <h4>Your Team Approves</h4>
-            <p>One tap to approve, modify, or decline. No deal goes out without a human sign-off.</p>
+            <p>One tap to approve, modify, or decline. No offer goes out without a human sign-off.</p>
           </div>
         </div>
 
         <div class="pstep">
-          <div class="pstep-dot"><span>5</span></div>
+          <div class="pstep-dot"><span>5</span><div class="pstep-ring"></div></div>
           <div class="pstep-content">
             <h4>Customer Gets the Offer</h4>
-            <p>A clean, professional offer is delivered instantly — the customer never experienced the wait.</p>
+            <p>A clean, professional offer is delivered instantly — the customer never felt the wait.</p>
           </div>
         </div>
 
@@ -230,23 +269,31 @@
     <h2>What this means for your dealership</h2>
 
     <div class="outcomes-grid">
-      <div class="outcome-card">
-        <div class="outcome-icon">📅</div>
+      <div class="outcome-card reveal">
+        <div class="outcome-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="5" width="18" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 2V5M15 2V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2 9H20" stroke="currentColor" stroke-width="1.5"/><path d="M7 13H9M13 13H15M7 16H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
         <h3>More Appointments</h3>
-        <p>Leads are engaged and qualified before your team arrives in the morning — with appointments already on the books.</p>
+        <p>Leads are engaged and qualified before your team arrives in the morning — appointments already on the books.</p>
       </div>
-      <div class="outcome-card">
-        <div class="outcome-icon">⚡</div>
+      <div class="outcome-card reveal" style="--delay:.1s">
+        <div class="outcome-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M11 6V11L14 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
         <h3>Faster Follow-Up</h3>
-        <p>No lead sits unanswered. AutoAI handles the first touchpoint in under a second, every time.</p>
+        <p>No lead sits unanswered. Autoharmony handles the first touchpoint in under a second, every time.</p>
       </div>
-      <div class="outcome-card">
-        <div class="outcome-icon">🎯</div>
+      <div class="outcome-card reveal" style="--delay:.2s">
+        <div class="outcome-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L13.5 8H20L14.5 11.5L16.5 18L11 14L5.5 18L7.5 11.5L2 8H8.5L11 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
         <h3>Higher Close Rates</h3>
         <p>Buyers who receive instant responses are more engaged, more committed, and easier to close.</p>
       </div>
-      <div class="outcome-card">
-        <div class="outcome-icon">💰</div>
+      <div class="outcome-card reveal" style="--delay:.3s">
+        <div class="outcome-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M11 6V7M11 15V16M8 9C8 7.9 9.3 7 11 7C12.7 7 14 7.9 14 9C14 11 11 11 11 13M11 13V13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
         <h3>Protected Margins</h3>
         <p>Because humans approve every deal, you stop accidental discounting and control your numbers.</p>
       </div>
@@ -261,12 +308,12 @@
 
     <div class="cta-grid">
 
-      <div class="cta-left">
+      <div class="cta-left reveal">
         <div class="section-label">Get Started</div>
         <h2>Close more deals.<br>Add zero risk.</h2>
         <p>
           Give your team the speed of AI while keeping complete control
-          over every customer interaction. See AutoAI in action — live,
+          over every customer interaction. See Autoharmony in action — live,
           on your own leads.
         </p>
         <div class="trust-items">
@@ -276,26 +323,27 @@
         </div>
       </div>
 
-      <div class="cta-right">
+      <div class="cta-right reveal" style="--delay:.15s">
         <div class="form-card">
           <h3>Request a Demo</h3>
-          <p class="form-sub">We'll reach out within one business day.</p>
+          <p class="form-sub">We will reach out within one business day.</p>
 
           <div class="form-group">
-            <label for="name">Your Name</label>
-            <input type="text" id="name" placeholder="Jane Smith">
+            <label for="fname">Your Name</label>
+            <input type="text" id="fname" placeholder="Jane Smith" autocomplete="name">
           </div>
           <div class="form-group">
-            <label for="email">Work Email</label>
-            <input type="email" id="email" placeholder="jane@dealership.com">
+            <label for="femail">Work Email</label>
+            <input type="email" id="femail" placeholder="jane@dealership.com" autocomplete="email">
           </div>
           <div class="form-group">
-            <label for="dealership">Dealership Name</label>
-            <input type="text" id="dealership" placeholder="Smith Ford Lincoln">
+            <label for="fdealership">Dealership Name</label>
+            <input type="text" id="fdealership" placeholder="Smith Ford Lincoln">
           </div>
 
           <button class="btn btn-primary btn-full" id="submitBtn" onclick="handleSubmit()">
             Schedule My Demo
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L7 1M13 7L7 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <p class="form-note">No spam. No hard sell. Just a 20-minute walkthrough.</p>
         </div>
@@ -310,11 +358,16 @@
 <footer>
   <div class="container footer-inner">
     <div class="logo">
-      <span class="logo-mark">A</span>
-      AutoAI<span class="logo-dot">.</span>
+      <div class="logo-mark">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1L14 4.5V11.5L8 15L2 11.5V4.5L8 1Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="8" cy="8" r="2" fill="white"/>
+        </svg>
+      </div>
+      Autoharmony<span class="logo-dot">.</span>
     </div>
     <p class="footer-tag">We simplify the complex. We've got this.</p>
-    <p class="footer-copy">&copy; 2025 AutoAI Sales. All rights reserved.</p>
+    <p class="footer-copy">&copy; 2025 Autoharmony. All rights reserved.</p>
   </div>
 </footer>
 
