@@ -247,7 +247,27 @@ nav, section, footer { position: relative; z-index: 1; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
+  align-items: start;
+}
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+}
+
+.chat-demo-wrapper {
+  width: 100%;
+  max-width: 520px;
+}
+
+.chat-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 520px;
+  max-width: 100%;
+  margin: 0 0 12px 0;
 }
 
 .eyebrow {
