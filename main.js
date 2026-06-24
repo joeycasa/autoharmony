@@ -391,6 +391,19 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+/* =============================================
+   VALIDATION ERROR HELPER FUNCTION
+   ============================================= */
+function highlightError(input) {
+  input.style.borderColor = '#FF6B6B';
+  input.style.boxShadow = '0 0 0 4px rgba(255, 107, 107, 0.15)';
+  
+  function reset() {
+    input.style.borderColor = '';
+    input.style.boxShadow = '';
+    input.removeEventListener('input', reset);
+  }
+
   input.addEventListener('input', reset);
 
   // Also auto-reset after 2.5s even if user doesn't type
