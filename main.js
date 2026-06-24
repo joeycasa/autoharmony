@@ -342,48 +342,54 @@
 
 
 /* =============================================
-   FORM SUBMISSION
+   FORM SUBMISSION (GOOGLE FORMS INTEGRATION)
    ============================================= */
-function handleSubmit() {
-  const nameEl  = document.getElementById('fname');
-  const emailEl = document.getElementById('femail');
-  const dealEl  = document.getElementById('fdealership');
-  const btn     = document.getElementById('submitBtn');
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('demoForm');
+  const iframe = document.getElementById('hidden_iframe');
+  const btn = document.getElementById('submitBtn');
+  let isSubmitting = false;
 
-  if (!nameEl || !emailEl || !dealEl || !btn) return;
+  if (!form || !iframe || !btn) return;
 
-  const name  = nameEl.value.trim();
-  const email = emailEl.value.trim();
-  const deal  = dealEl.value.trim();
+  // 1. Handle Form Validation on Submit
+  form.addEventListener('submit', (e) => {
+    const nameEl  = document.getElementById('fname');
+    const emailEl = document.getElementById('femail');
+    const dealEl  = document.getElementById('fdealership');
 
-  // Simple validation: highlight first empty field and bail
-  if (!name)  { highlightError(nameEl);  return; }
-  if (!email) { highlightError(emailEl); return; }
-  if (!deal)  { highlightError(dealEl);  return; }
+    const name  = nameEl.value.trim();
+    const email = emailEl.value.trim();
+    const deal  = dealEl.value.trim();
 
-  // Basic email format check
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    highlightError(emailEl);
-    return;
-  }
+    // If validation fails, stop the form from sending to Google
+    if (!name || !email || !deal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      e.preventDefault();
+      if (!name) highlightError(nameEl);
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) highlightError(emailEl);
+      if (!deal) highlightError(dealEl);
+      return;
+    }
 
-  // Success state
-  btn.disabled = true;
-  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8L6.5 12.5L14 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Request Received!';
-  btn.style.background = '#22C55E';
-  btn.style.boxShadow  = '0 8px 24px rgba(34,197,94,.35)';
-}
+    // Switch button to loading state
+    isSubmitting = true;
+    btn.disabled = true;
+    btn.innerHTML = 'Sending...';
+  });
 
-function highlightError(input) {
-  input.focus();
-  input.style.borderColor = '#FF6B6B';
-  input.style.boxShadow   = '0 0 0 3px rgba(255,107,107,.15)';
-
-  const reset = () => {
-    input.style.borderColor = '';
-    input.style.boxShadow   = '';
-    input.removeEventListener('input', reset);
-  };
+  // 2. Catch Google's response via the hidden iframe
+  iframe.addEventListener('load', () => {
+    if (isSubmitting) {
+      // Trigger your success visual state
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8L6.5 12.5L14 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Request Received!';
+      btn.style.background = '#22C55E';
+      btn.style.boxShadow  = '0 8px 24px rgba(34,197,94,.35)';
+      
+      isSubmitting = false;
+      form.reset(); // Clear the inputs
+    }
+  });
+});
 
   input.addEventListener('input', reset);
 
