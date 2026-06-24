@@ -325,28 +325,36 @@
 
       <div class="cta-right reveal" style="--delay:.15s">
         <div class="form-card">
-          <h3>Request a Demo</h3>
-          <p class="form-sub">We will reach out within one business day.</p>
+  <h3>Request a Demo</h3>
+  <p class="form-sub">We will reach out within one business day.</p>
 
-          <div class="form-group">
-            <label for="fname">Your Name</label>
-            <input type="text" id="fname" placeholder="Jane Smith" autocomplete="name">
-          </div>
-          <div class="form-group">
-            <label for="femail">Work Email</label>
-            <input type="email" id="femail" placeholder="jane@dealership.com" autocomplete="email">
-          </div>
-          <div class="form-group">
-            <label for="fdealership">Dealership Name</label>
-            <input type="text" id="fdealership" placeholder="Smith Ford Lincoln">
-          </div>
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-          <button class="btn btn-primary btn-full" id="submitBtn" onclick="handleSubmit()">
-            Schedule My Demo
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L7 1M13 7L7 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <p class="form-note">No spam. No hard sell. Just a 20-minute walkthrough.</p>
-        </div>
+  <form id="demoForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdeKEBBw_ZiB_HG6nwFwHXdrByc2j8ANyHkkdH7dcfxqCaYKA/formResponse" method="POST" target="hidden_iframe">
+    
+    <div class="form-group">
+      <label for="fname">Your Name</label>
+      <input type="text" id="fname" name="entry.1653240514" placeholder="Jane Smith" autocomplete="name">
+    </div>
+    
+    <div class="form-group">
+      <label for="femail">Work Email</label>
+      <input type="email" id="femail" name="entry.1744322956" placeholder="jane@dealership.com" autocomplete="email">
+    </div>
+    
+    <div class="form-group">
+      <label for="fdealership">Dealership Name</label>
+      <input type="text" id="fdealership" name="entry.282644497" placeholder="Smith Ford Lincoln">
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+      Schedule My Demo
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L7 1M13 7L7 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </form>
+  
+  <p class="form-note">No spam. No hard sell. Just a 20-minute walkthrough.</p>
+</div>
       </div>
 
     </div>
